@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 🌸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Ambient background layers -->
+    <div class="aurora"></div>
+    <canvas id="canvas"></canvas>
+
+    <div class="scene">
+
+        <!-- Central shape -->
+        <div class="shape-wrap" id="shapeWrap">
+            <svg id="svg" viewBox="0 0 240 260" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Tree gradient: cool mint → warm blush -->
+                    <linearGradient id="tG" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%"   stop-color="#b2fefa"/>
+                        <stop offset="40%"  stop-color="#c9f0d8"/>
+                        <stop offset="100%" stop-color="#ffd6e7"/>
+                    </linearGradient>
+                    <!-- Heart gradient: deep rose → hot pink → light -->
+                    <radialGradient id="hG" cx="40%" cy="35%" r="65%">
+                        <stop offset="0%"   stop-color="#ff8fab"/>
+                        <stop offset="45%"  stop-color="#ff3d7f"/>
+                        <stop offset="100%" stop-color="#c0003c"/>
+                    </radialGradient>
+                    <!-- Heart shine -->
+                    <radialGradient id="hS" cx="30%" cy="25%" r="50%">
+                        <stop offset="0%"   stop-color="rgba(255,255,255,0.55)"/>
+                        <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                    </radialGradient>
+                    <!-- Glow filter -->
+                    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+                        <feGaussianBlur stdDeviation="5" result="b"/>
+                        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <!-- Strong glow for heart -->
+                    <filter id="hGlow" x="-60%" y="-60%" width="220%" height="220%">
+                        <feGaussianBlur stdDeviation="12" result="b"/>
+                        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <!-- Soft blur for leaf clusters -->
+                    <filter id="leafBlur" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="2.5"/>
+                    </filter>
+                </defs>
+
+                <!-- ══ TREE ══ -->
+                <g id="tree" filter="url(#glow)">
+
+                    <!-- Ground shadow -->
+                    <ellipse cx="120" cy="252" rx="28" ry="5" fill="rgba(180,255,220,0.12)"/>
+
+                    <!-- Trunk -->
+                    <path d="M113 252 Q110 230 109 210 Q108 190 110 170 Q112 150 115 130
+                             Q118 150 119 170 Q120 190 122 210 Q124 230 127 252 Z"
+                          fill="url(#tG)" opacity="0.95"/>
+                    <!-- Trunk texture lines -->
+                    <path d="M114 240 Q116 220 115 200" stroke="rgba(255,255,255,0.15)" stroke-width="1" fill="none"/>
+                    <path d="M120 235 Q122 215 121 195" stroke="rgba(255,255,255,0.1)"  stroke-width="1" fill="none"/>
+
+                    <!-- Root flares -->
+                    <path d="M112 245 Q98 250 88 255"  stroke="url(#tG)" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+                    <path d="M122 245 Q136 250 146 255" stroke="url(#tG)" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+                    <path d="M110 248 Q100 256 92 260"  stroke="url(#tG)" stroke-width="2"   fill="none" stroke-linecap="round" opacity="0.45"/>
+                    <path d="M124 248 Q134 256 142 260" stroke="url(#tG)" stroke-width="2"   fill="none" stroke-linecap="round" opacity="0.45"/>
+
+                    <!-- Main branches -->
+                    <path class="br" d="M114 165 Q92 148 70 130 Q56 120 44 106"  stroke="url(#tG)" stroke-width="4"   fill="none" stroke-linecap="round"/>
+                    <path class="br" d="M118 158 Q140 140 162 122 Q174 113 184 100" stroke="url(#tG)" stroke-width="4"   fill="none" stroke-linecap="round"/>
+                    <path class="br" d="M115 185 Q95 175 76 162 Q64 154 52 142"  stroke="url(#tG)" stroke-width="3"   fill="none" stroke-linecap="round"/>
+                    <path class="br" d="M119 185 Q138 175 156 162 Q168 154 178 142" stroke="url(#tG)" stroke-width="3"   fill="none" stroke-linecap="round"/>
+                    <!-- Mid branches -->
+                    <path class="br" d="M116 145 Q116 122 116 100" stroke="url(#tG)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+                    <path class="br" d="M70 130 Q60 115 52 100"    stroke="url(#tG)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.85"/>
+                    <path class="br" d="M162 122 Q170 108 176 94"  stroke="url(#tG)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.85"/>
+                    <!-- Fine branches -->
+                    <path class="br" d="M52 100 Q44 88 38 76"   stroke="url(#tG)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.7"/>
+                    <path class="br" d="M176 94 Q182 82 188 70"  stroke="url(#tG)" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.7"/>
+                    <path class="br" d="M116 100 Q108 82 104 64" stroke="url(#tG)" stroke-width="2"   fill="none" stroke-linecap="round" opacity="0.8"/>
+                    <path class="br" d="M116 100 Q124 82 128 64" stroke="url(#tG)" stroke-width="2"   fill="none" stroke-linecap="round" opacity="0.8"/>
+
+                    <!-- Leaf clusters — blurred base + crisp top -->
+                    <g class="lc" id="lc0">
+                        <circle cx="116" cy="52" r="32" fill="#b2fefa" opacity="0.12" filter="url(#leafBlur)"/>
+                        <circle cx="116" cy="52" r="22" fill="#c9f0d8" opacity="0.22"/>
+                        <circle cx="104" cy="44" r="14" fill="#b2fefa" opacity="0.35"/>
+                        <circle cx="128" cy="44" r="14" fill="#ffd6e7" opacity="0.35"/>
+                        <circle cx="116" cy="36" r="13" fill="#c9f0d8" opacity="0.4"/>
+                        <circle cx="100" cy="56" r="10" fill="#b2fefa" opacity="0.3"/>
+                        <circle cx="132" cy="56" r="10" fill="#ffd6e7" opacity="0.3"/>
+                        <circle cx="116" cy="28" r="9"  fill="#ffd6e7" opacity="0.45"/>
+                    </g>
+                    <g class="lc" id="lc1">
+                        <circle cx="40"  cy="70" r="24" fill="#b2fefa" opacity="0.12" filter="url(#leafBlur)"/>
+                        <circle cx="40"  cy="70" r="16" fill="#c9f0d8" opacity="0.25"/>
+                        <circle cx="32"  cy="62" r="11" fill="#b2fefa" opacity="0.38"/>
+                        <circle cx="50"  cy="63" r="10" fill="#ffd6e7" opacity="0.38"/>
+                        <circle cx="40"  cy="56" r="9"  fill="#c9f0d8" opacity="0.42"/>
+                        <circle cx="28"  cy="74" r="7"  fill="#ffd6e7" opacity="0.3"/>
+                    </g>
+                    <g class="lc" id="lc2">
+                        <circle cx="188" cy="62" r="24" fill="#ffd6e7" opacity="0.12" filter="url(#leafBlur)"/>
+                        <circle cx="188" cy="62" r="16" fill="#ffd6e7" opacity="0.25"/>
+                        <circle cx="180" cy="54" r="11" fill="#c9f0d8" opacity="0.38"/>
+                        <circle cx="196" cy="55" r="10" fill="#ffd6e7" opacity="0.38"/>
+                        <circle cx="188" cy="48" r="9"  fill="#b2fefa" opacity="0.42"/>
+                        <circle cx="200" cy="66" r="7"  fill="#ffd6e7" opacity="0.3"/>
+                    </g>
+                    <g class="lc" id="lc3">
+                        <circle cx="50"  cy="138" r="18" fill="#b2fefa" opacity="0.15" filter="url(#leafBlur)"/>
+                        <circle cx="50"  cy="138" r="12" fill="#c9f0d8" opacity="0.28"/>
+                        <circle cx="42"  cy="130" r="8"  fill="#b2fefa" opacity="0.38"/>
+                        <circle cx="58"  cy="131" r="7"  fill="#ffd6e7" opacity="0.38"/>
+                        <circle cx="50"  cy="126" r="7"  fill="#c9f0d8" opacity="0.42"/>
+                    </g>
+                    <g class="lc" id="lc4">
+                        <circle cx="178" cy="138" r="18" fill="#ffd6e7" opacity="0.15" filter="url(#leafBlur)"/>
+                        <circle cx="178" cy="138" r="12" fill="#ffd6e7" opacity="0.28"/>
+                        <circle cx="170" cy="130" r="8"  fill="#c9f0d8" opacity="0.38"/>
+                        <circle cx="186" cy="131" r="7"  fill="#ffd6e7" opacity="0.38"/>
+                        <circle cx="178" cy="126" r="7"  fill="#b2fefa" opacity="0.42"/>
+                    </g>
+
+                    <!-- Firefly dots -->
+                    <circle class="ff" cx="36"  cy="58"  r="2"   fill="#fff" opacity="0.9"/>
+                    <circle class="ff" cx="56"  cy="50"  r="1.5" fill="#b2fefa" opacity="0.85"/>
+                    <circle class="ff" cx="192" cy="50"  r="2"   fill="#fff" opacity="0.9"/>
+                    <circle class="ff" cx="174" cy="58"  r="1.5" fill="#ffd6e7" opacity="0.85"/>
+                    <circle class="ff" cx="108" cy="24"  r="2"   fill="#fff" opacity="0.9"/>
+                    <circle class="ff" cx="124" cy="22"  r="1.5" fill="#c9f0d8" opacity="0.85"/>
+                    <circle class="ff" cx="46"  cy="128" r="1.5" fill="#b2fefa" opacity="0.8"/>
+                    <circle class="ff" cx="182" cy="128" r="1.5" fill="#ffd6e7" opacity="0.8"/>
+                </g>
+
+                <!-- ══ HEART ══ (hidden until morph) -->
+                <g id="heart" opacity="0">
+                    <!-- Outer glow ring -->
+                    <path d="M120 210 C120 210 30 158 30 96 C30 58 58 38 120 72 C182 38 210 58 210 96 C210 158 120 210 120 210Z"
+                          fill="#ff3d7f" opacity="0.18" filter="url(#hGlow)"/>
+                    <!-- Main heart -->
+                    <path id="hPath"
+                          d="M120 205 C120 205 34 156 34 96 C34 60 60 42 120 74 C180 42 206 60 206 96 C206 156 120 205 120 205Z"
+                          fill="url(#hG)"/>
+                    <!-- Shine overlay -->
+                    <path d="M120 205 C120 205 34 156 34 96 C34 60 60 42 120 74 C180 42 206 60 206 96 C206 156 120 205 120 205Z"
+                          fill="url(#hS)"/>
+                    <!-- Inner depth shadow -->
+                    <path d="M120 188 C120 188 52 148 52 98 C52 70 72 56 120 82 C168 56 188 70 188 98 C188 148 120 188 120 188Z"
+                          fill="rgba(180,0,60,0.22)"/>
+                    <!-- Specular highlight -->
+                    <ellipse cx="88" cy="82" rx="18" ry="11" fill="white" opacity="0.18" transform="rotate(-35 88 82)"/>
+                    <ellipse cx="82" cy="76" rx="7"  ry="4"  fill="white" opacity="0.28" transform="rotate(-35 82 76)"/>
+                </g>
+
+            </svg>
+
+            <!-- Ripple rings (shown after morph) -->
+            <div class="rings" id="rings">
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+            </div>
+        </div>
+
+        <!-- Poem -->
+        <div class="poem-wrap" id="poemWrap">
+            <div class="poem-line" id="pl0"></div>
+            <div class="poem-line" id="pl1"></div>
+            <div class="poem-line" id="pl2"></div>
+            <div class="poem-line" id="pl3"></div>
+            <div class="poem-line" id="pl4"></div>
+            <div class="poem-line" id="pl5"></div>
+        </div>
+
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

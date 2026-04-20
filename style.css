@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300;1,400&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ══════════════════════════════
+   BASE
+══════════════════════════════ */
+body {
+    background: #03010a;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ══════════════════════════════
+   AURORA BACKGROUND
+══════════════════════════════ */
+.aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse 80% 50% at 20% 80%, rgba(0,200,150,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(180,0,120,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(60,0,100,0.12) 0%, transparent 80%);
+    animation: auroraPulse 12s ease-in-out infinite alternate;
+}
+
+@keyframes auroraPulse {
+    0%   { opacity: 0.6; filter: hue-rotate(0deg); }
+    50%  { opacity: 1;   filter: hue-rotate(20deg); }
+    100% { opacity: 0.7; filter: hue-rotate(-10deg); }
+}
+
+/* ══════════════════════════════
+   CANVAS (petals / particles)
+══════════════════════════════ */
+#canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ══════════════════════════════
+   SCENE
+══════════════════════════════ */
+.scene {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 36px;
+}
+
+/* ══════════════════════════════
+   SVG SHAPE
+══════════════════════════════ */
+.shape-wrap {
+    position: relative;
+    width: 260px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 0 18px rgba(180,255,220,0.18));
+}
+
+/* ── Tree sway ── */
+#tree {
+    transform-origin: 116px 252px;
+    animation: sway 6s ease-in-out infinite alternate;
+    transition: opacity 1.4s ease;
+}
+@keyframes sway {
+    0%   { transform: rotate(-3.5deg) translateX(-2px); }
+    100% { transform: rotate(3.5deg)  translateX(2px); }
+}
+
+/* ── Branches ── */
+.br {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: brSway 5s ease-in-out infinite alternate;
+}
+.br:nth-child(2n)   { animation-delay: 0.4s; animation-direction: alternate-reverse; }
+.br:nth-child(3n)   { animation-delay: 0.9s; }
+.br:nth-child(4n)   { animation-delay: 1.3s; animation-direction: alternate-reverse; }
+@keyframes brSway {
+    0%   { transform: rotate(-2.5deg); }
+    100% { transform: rotate(2.5deg); }
+}
+
+/* ── Leaf clusters ── */
+.lc {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: lcBob 4s ease-in-out infinite alternate;
+}
+#lc0 { animation-delay: 0s; }
+#lc1 { animation-delay: 0.5s; }
+#lc2 { animation-delay: 0.3s; }
+#lc3 { animation-delay: 0.8s; }
+#lc4 { animation-delay: 0.6s; }
+@keyframes lcBob {
+    0%   { transform: translateY(0)    scale(1); }
+    100% { transform: translateY(-5px) scale(1.05); }
+}
+
+/* ── Fireflies ── */
+.ff {
+    animation: ffPulse 2.5s ease-in-out infinite alternate;
+}
+.ff:nth-child(1) { animation-delay: 0s;    animation-duration: 2.2s; }
+.ff:nth-child(2) { animation-delay: 0.4s;  animation-duration: 3s; }
+.ff:nth-child(3) { animation-delay: 0.8s;  animation-duration: 2.6s; }
+.ff:nth-child(4) { animation-delay: 1.2s;  animation-duration: 2s; }
+.ff:nth-child(5) { animation-delay: 0.2s;  animation-duration: 2.8s; }
+.ff:nth-child(6) { animation-delay: 0.6s;  animation-duration: 3.2s; }
+.ff:nth-child(7) { animation-delay: 1s;    animation-duration: 2.4s; }
+.ff:nth-child(8) { animation-delay: 1.4s;  animation-duration: 2.9s; }
+@keyframes ffPulse {
+    0%   { opacity: 0.2; r: 1.5; }
+    100% { opacity: 1;   r: 3; }
+}
+
+/* ── Tree fade out ── */
+#tree.out {
+    opacity: 0;
+    animation: none;
+    transition: opacity 1.4s ease;
+}
+
+/* ══════════════════════════════
+   HEART
+══════════════════════════════ */
+#heart {
+    transition: opacity 1.4s ease 0.3s;
+    transform-origin: 120px 130px;
+}
+#heart.in {
+    opacity: 1 !important;
+    animation: heartBeat 1.8s ease-in-out infinite;
+}
+@keyframes heartBeat {
+    0%   { transform: scale(1);    }
+    15%  { transform: scale(1.1);  }
+    30%  { transform: scale(0.96); }
+    45%  { transform: scale(1.06); }
+    60%  { transform: scale(0.98); }
+    100% { transform: scale(1);    }
+}
+
+/* ── SVG glow after morph ── */
+.shape-wrap.morphed #svg {
+    filter: drop-shadow(0 0 40px rgba(255,61,127,0.55))
+            drop-shadow(0 0 80px rgba(255,61,127,0.25));
+    transition: filter 1.5s ease;
+}
+
+/* ══════════════════════════════
+   RIPPLE RINGS
+══════════════════════════════ */
+.rings {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s ease 1s;
+}
+.rings.show { opacity: 1; }
+
+.ring {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 61, 127, 0.5);
+    animation: ripple 3s ease-out infinite;
+}
+.ring:nth-child(2) { animation-delay: 1s; }
+.ring:nth-child(3) { animation-delay: 2s; }
+
+@keyframes ripple {
+    0%   { transform: scale(0.8); opacity: 0.7; }
+    100% { transform: scale(2.8); opacity: 0; }
+}
+
+/* ══════════════════════════════
+   POEM
+══════════════════════════════ */
+.poem-wrap {
+    text-align: center;
+    max-width: 600px;
+    padding: 0 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.poem-line {
+    color: rgba(255, 255, 255, 0);
+    font-size: 1.3rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+    text-shadow:
+        0 0 20px rgba(255, 120, 180, 0.7),
+        0 0 50px rgba(255, 61, 127, 0.3);
+    transform: translateY(14px);
+    transition: color 1s ease, transform 1s ease;
+    min-height: 1.9em;
+}
+
+.poem-line.show {
+    color: rgba(255, 240, 248, 0.95);
+    transform: translateY(0);
+}
+
+/* Cursor on active line */
+.poem-line.typing::after {
+    content: '';
+    display: inline-block;
+    width: 1.5px;
+    height: 1em;
+    background: rgba(255, 120, 180, 0.9);
+    margin-left: 3px;
+    vertical-align: middle;
+    animation: blink 0.9s step-end infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+/* ══════════════════════════════
+   AMBIENT SCREEN GLOW (post-morph)
+══════════════════════════════ */
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 45%, rgba(255,61,127,0.07) 0%, transparent 70%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 2s ease;
+    pointer-events: none;
+}
+body.morphed::after { opacity: 1; }
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+@media (max-width: 480px) {
+    .shape-wrap { width: 200px; height: 220px; }
+    .poem-line  { font-size: 1.1rem; }
+    .scene      { gap: 24px; }
+}
